@@ -1,0 +1,16 @@
+version: "3"
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - 80:80
+    volumes:
+      - ./config:/etc/nginx/conf.d
+      - ./log:/var/log/nginx
+      - ./src:/var/www/html
+  alp:
+    build:
+      context: .
+      dockerfile: .image/Dockerfile
+    volumes:
+      - ./log:/var/log/nginx

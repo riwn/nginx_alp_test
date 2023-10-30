@@ -6,11 +6,28 @@ services:
       - 80:80
     volumes:
       - ./config:/etc/nginx/conf.d
-      - ./log:/var/log/nginx
+      - ./log/nginx:/var/log/nginx
       - ./src:/var/www/html
   alp:
     build:
       context: .
       dockerfile: .image/Dockerfile
     volumes:
-      - ./log:/var/log/nginx
+      - ./log/nginx:/var/log/nginx
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - .image/init:/docker-entrypoint-initdb.d
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./log/mysql:/var/log/mysql
+      # - mysql-volume:/var/lib/mysql
+
+# volumes:
+#   mysql-volume:
